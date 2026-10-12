@@ -6,6 +6,8 @@ CONF_HOST = "host"
 CONF_PORT = "port"
 CONF_USERNAME = "username"
 CONF_KEY_PATH = "key_path"
+CONF_TITLE = "title"
+CONF_ICON = "icon"
 
 DEFAULT_HOST = "127.0.0.1"
 DEFAULT_PORT = 22
@@ -14,6 +16,9 @@ DEFAULT_USERNAME = "claude"
 # Hôtes acceptés : la console ne se connecte qu'à la machine qui héberge HA (pas de vérification
 # de clé d'hôte, donc pas de connexion vers un autre ordinateur).
 LOOPBACK_HOSTS = ("127.0.0.1", "localhost", "::1")
+
+DEFAULT_TITLE = "Console"
+DEFAULT_ICON = "mdi:console"
 
 PANEL_URL_PATH = "screen-console"
 PANEL_COMPONENT = "screen-console-panel"

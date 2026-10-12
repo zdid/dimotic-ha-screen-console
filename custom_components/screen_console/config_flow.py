@@ -6,15 +6,21 @@ from typing import Any
 
 import voluptuous as vol
 
-from homeassistant.config_entries import ConfigFlow, ConfigFlowResult
+from homeassistant.config_entries import ConfigEntry, ConfigFlow, ConfigFlowResult, OptionsFlow
+from homeassistant.core import callback
+from homeassistant.helpers import selector
 
 from .const import (
     CONF_HOST,
+    CONF_ICON,
     CONF_KEY_PATH,
     CONF_PORT,
+    CONF_TITLE,
     CONF_USERNAME,
     DEFAULT_HOST,
+    DEFAULT_ICON,
     DEFAULT_PORT,
+    DEFAULT_TITLE,
     DEFAULT_USERNAME,
     DOMAIN,
     GATE_SCRIPT_NAME,
@@ -28,6 +34,11 @@ class ScreenConsoleConfigFlow(ConfigFlow, domain=DOMAIN):
     """Une seule console par installation de HA."""
 
     VERSION = 1
+
+    @staticmethod
+    @callback
+    def async_get_options_flow(config_entry: ConfigEntry) -> OptionsFlow:
+        return ScreenConsoleOptionsFlow()
 
     def __init__(self) -> None:
         self._data: dict[str, Any] = {}
@@ -67,3 +78,21 @@ class ScreenConsoleConfigFlow(ConfigFlow, domain=DOMAIN):
                 "gate_script": gate,
             },
         )
+
+
+class ScreenConsoleOptionsFlow(OptionsFlow):
+    """Titre et icône de l'entrée du menu de gauche (modifiables à tout moment)."""
+
+    async def async_step_init(self, user_input: dict[str, Any] | None = None) -> ConfigFlowResult:
+        if user_input is not None:
+            title = (user_input.get(CONF_TITLE) or "").strip() or DEFAULT_TITLE
+            icon = (user_input.get(CONF_ICON) or "").strip() or DEFAULT_ICON
+            return self.async_create_entry(title="", data={CONF_TITLE: title, CONF_ICON: icon})
+        opts = self.config_entry.options
+        schema = vol.Schema(
+            {
+                vol.Required(CONF_TITLE, default=opts.get(CONF_TITLE, DEFAULT_TITLE)): str,
+                vol.Required(CONF_ICON, default=opts.get(CONF_ICON, DEFAULT_ICON)): selector.IconSelector(),
+            }
+        )
+        return self.async_show_form(step_id="init", data_schema=schema)

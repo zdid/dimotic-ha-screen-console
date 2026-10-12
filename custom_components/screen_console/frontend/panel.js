@@ -75,7 +75,8 @@
     }
     set hass(hass) { this._hass = hass; if (!this._built) this._build(); this._menu && (this._menu.hass = hass); }
     set narrow(value) { this._narrow = value; this._menu && (this._menu.narrow = value); }
-    set panel(_p) {} set route(_r) {}
+    set panel(p) { this._title = (p && p.config && p.config.title) || 'Console'; if (this.$) this.$('title').textContent = this._title; }
+    set route(_r) {}
 
     disconnectedCallback() { this._disconnect(true); this._ro && this._ro.disconnect(); }
 
@@ -86,7 +87,7 @@
         <link rel="stylesheet" href="${BASE}xterm.css">
         <div class="top">
           <ha-menu-button></ha-menu-button>
-          <span class="title">Console</span>
+          <span class="title" id="title">${this._title || 'Console'}</span>
           <span class="status" id="status">Démarrage…</span>
           <div class="actions">
             <select id="sel" aria-label="Session screen"></select>

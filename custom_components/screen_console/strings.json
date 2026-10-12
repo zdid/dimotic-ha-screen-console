@@ -4,14 +4,34 @@
       "user": {
         "title": "Console screen",
         "description": "La console se connecte en SSH à la machine qui héberge Home Assistant (adresse locale uniquement) et s'attache à une session « screen » de l'utilisateur indiqué.",
-        "data": { "host": "Adresse de la machine", "port": "Port SSH", "username": "Utilisateur de la machine" }
+        "data": {
+          "host": "Adresse de la machine",
+          "port": "Port SSH",
+          "username": "Utilisateur de la machine"
+        }
       },
       "key": {
         "title": "Autoriser la clé sur la machine",
         "description": "Une clé SSH a été créée pour la console. Ajoutez la ligne ci-dessous dans `~/.ssh/authorized_keys` de l'utilisateur de la machine, puis installez le script de contrôle `{gate_script}` (voir le fichier README du dépôt). La clé ne pourra alors que lister les sessions screen et s'y attacher, depuis cette machine uniquement.\n\n```\n{authorized_line}\n```"
       }
     },
-    "error": { "not_local": "Seule la machine locale est acceptée (127.0.0.1, localhost ou ::1)." },
-    "abort": { "already_configured": "La console est déjà configurée." }
+    "error": {
+      "not_local": "Seule la machine locale est acceptée (127.0.0.1, localhost ou ::1)."
+    },
+    "abort": {
+      "already_configured": "La console est déjà configurée."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Entrée du menu",
+        "description": "Titre et icône affichés dans le menu de gauche de Home Assistant.",
+        "data": {
+          "title": "Titre",
+          "icon": "Icône"
+        }
+      }
+    }
   }
 }

@@ -21,5 +21,17 @@
     "abort": {
       "already_configured": "The console is already configured."
     }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Menu entry",
+        "description": "Title and icon shown in the Home Assistant sidebar.",
+        "data": {
+          "title": "Title",
+          "icon": "Icon"
+        }
+      }
+    }
   }
 }

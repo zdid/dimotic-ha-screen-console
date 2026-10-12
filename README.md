@@ -38,6 +38,8 @@ mobile HA (Android et iOS : même moteur web, voir « Limites »).
 
 Le panneau **Console** apparaît alors dans le menu (pour les administrateurs).
 
+**Titre et icône du menu** : *Paramètres → Appareils et services → Screen Console → Configurer* (titre libre, icône au choix ; par défaut « Console » et `mdi:console`). Le menu est mis à jour tout de suite. L'intégration a sa propre icône (dossier `brand/`, affichée par HA 2026.3 et suivants).
+
 ## Sécurité
 
 - La clé n'est acceptée **que depuis 127.0.0.1 / ::1** et n'exécute **que** le script de contrôle, qui n'accepte que
