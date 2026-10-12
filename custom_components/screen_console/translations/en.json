@@ -1,0 +1,25 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Screen console",
+        "description": "The console connects over SSH to the machine hosting Home Assistant (local address only) and attaches to a \"screen\" session of the given user.",
+        "data": {
+          "host": "Machine address",
+          "port": "SSH port",
+          "username": "Machine user"
+        }
+      },
+      "key": {
+        "title": "Authorize the key on the machine",
+        "description": "An SSH key was created for the console. Add the line below to `~/.ssh/authorized_keys` of the machine user, then install the gate script `{gate_script}` (see the repository README). The key can then only list screen sessions and attach to them, from this machine only.\n\n```\n{authorized_line}\n```"
+      }
+    },
+    "error": {
+      "not_local": "Only the local machine is accepted (127.0.0.1, localhost or ::1)."
+    },
+    "abort": {
+      "already_configured": "The console is already configured."
+    }
+  }
+}

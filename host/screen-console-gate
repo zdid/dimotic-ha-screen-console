@@ -1,0 +1,22 @@
+#!/bin/bash
+# Script de contrôle SSH de l'intégration « Screen Console » (dépôt zdid/dimotic-ha-screen-console).
+# Installé sur la machine hôte (ex. /home/claude/bin/screen-console-gate), appelé par la clé SSH de
+# l'intégration via `command="…"` dans ~/.ssh/authorized_keys. La clé ne peut faire QUE :
+#   list              -> liste les sessions screen de l'utilisateur
+#   attach <nom>      -> s'attache à la session <nom> (lettres, chiffres, . _ -)
+# Toute autre demande est refusée.
+cmd="${SSH_ORIGINAL_COMMAND:-}"
+case "$cmd" in
+  list)
+    screen -ls
+    exit 0
+    ;;
+  attach\ *)
+    name="${cmd#attach }"
+    if [[ "$name" =~ ^[A-Za-z0-9._-]{1,64}$ ]]; then
+      exec screen -x "$name"
+    fi
+    ;;
+esac
+echo "screen-console-gate : demande refusée" >&2
+exit 1
