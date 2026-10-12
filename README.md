@@ -49,7 +49,7 @@ Le panneau **Console** apparaît alors dans le menu (pour les administrateurs).
 ## Limites
 
 - **Vérifié** (HA 2026.8 en conteneur) : génération de la clé, liste des sessions, attachement, saisie, redimensionnement, refus des ordres
-  et des noms non autorisés, fonctions pures. **Pas encore vérifié** : l'affichage du panneau dans un navigateur et dans l'application mobile HA.
+  et des noms non autorisés, fonctions pures. Le panneau s'affiche et se connecte dans un navigateur de bureau (vérifié le 12/10/2026). **Pas encore vérifié** : l'application mobile HA.
   Sur Android et iOS le panneau est une page web standard (même moteur que l'application HA) donc il devrait fonctionner, mais le clavier
   virtuel du téléphone a ses particularités (Ctrl, Échap, flèches : d'où la barre de touches). **iOS : non testé.**
 - Une seule machine (locale) ; HA doit pouvoir joindre `127.0.0.1:22` (HA en conteneur avec `network_mode: host`, ou HA OS/Supervised

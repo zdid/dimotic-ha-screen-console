@@ -43,7 +43,7 @@
   ];
 
   const STYLE = `
-    :host { display: flex; flex-direction: column; height: 100%; background: #111; color: #fff; font-family: Arial, sans-serif; }
+    :host { display: flex; flex-direction: column; height: 100vh; height: 100dvh; background: #111; color: #fff; font-family: Arial, sans-serif; overflow: hidden; }
     .top { flex: none; display: flex; align-items: center; flex-wrap: wrap; gap: 4px 10px; padding: 4px 8px; background: #222; min-height: 48px; }
     .title { font-weight: bold; }
     .status { color: #aaa; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
