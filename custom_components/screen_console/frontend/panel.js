@@ -59,6 +59,7 @@
     button:disabled { opacity: .45; cursor: not-allowed; } button:active { background: #555; }
     .keys { flex: none; display: flex; gap: 6px; padding: 4px 8px; background: #1b1b1b; overflow-x: auto; }
     .keys button { flex: 1 0 auto; height: 36px; }
+    .keys button.on { background: #26a69a; border-color: #80cbc4; color: #00201d; font-weight: bold; }
     .term { flex: 1; min-height: 0; padding: 2px; } .term .xterm { height: 100%; }
     .hint { padding: 12px; color: #ccc; font-size: 14px; white-space: pre-wrap; }
     .hint code { display: block; background: #000; padding: 8px; margin-top: 8px; overflow-x: auto; white-space: pre-wrap; word-break: break-all; }
@@ -71,6 +72,7 @@
       this._hass = null; this._narrow = false; this._built = false;
       this._term = null; this._fit = null; this._unsub = null; this._sessionId = null;
       this._mouse = localStorage.getItem('screen_console:mouse') === '1';
+      this._scrolling = false; this._scrollBtn = null;
       this.attachShadow({ mode: 'open' });
     }
     set hass(hass) { this._hass = hass; if (!this._built) this._build(); this._menu && (this._menu.hass = hass); }
@@ -105,7 +107,19 @@
       for (const [label, seq, title] of KEYS) {
         const b = document.createElement('button'); b.textContent = label; b.title = title;
         b.addEventListener('mousedown', (e) => e.preventDefault());
-        b.addEventListener('click', () => this._send(expand(seq)));
+        if (label === 'Défiler') {
+          // Bouton à bascule : allumé = mode défilement (copie) de screen actif ; un second appui en sort (Échap).
+          this._scrollBtn = b;
+          b.addEventListener('click', () => {
+            if (!this._scrolling) { this._send(expand(seq)); this._setScrolling(true); }
+            else { this._send('\x1b'); this._setScrolling(false); }
+          });
+        } else {
+          b.addEventListener('click', () => {
+            this._send(expand(seq));
+            if (label === 'Échap' || label === 'Ctrl-C') this._setScrolling(false);
+          });
+        }
         keys.appendChild(b);
       }
       const mb = document.createElement('button'); mb.id = 'mouse';
@@ -117,6 +131,14 @@
       this.$('disconnect').addEventListener('click', () => this._disconnect(false));
       this.$('refresh').addEventListener('click', () => this._refresh());
       this._init();
+    }
+
+    _setScrolling(on) {
+      this._scrolling = on;
+      if (this._scrollBtn) {
+        this._scrollBtn.classList.toggle('on', on);
+        this._scrollBtn.title = on ? 'Mode défilement actif — rappuyer (ou Échap) pour en sortir' : 'Mode défilement de screen (Ctrl-A puis Échap)';
+      }
     }
 
     _setStatus(text, cls) { const s = this.$('status'); s.textContent = text; s.className = 'status ' + (cls || ''); }
@@ -172,7 +194,7 @@
     async _connect() {
       const name = this.$('sel').value; if (!name || this._unsub) return;
       localStorage.setItem(LAST_SESSION_KEY, name);
-      this._term.reset();
+      this._term.reset(); this._setScrolling(false);
       this._sessionId = 'c' + Math.random().toString(36).slice(2, 12) + Date.now().toString(36);
       this._setStatus('Connexion à « ' + name + ' »…');
       this.$('connect').disabled = true; this.$('sel').disabled = true;
@@ -196,6 +218,7 @@
     }
 
     _endLocal(message) {
+      this._setScrolling(false);
       if (this._unsub) { try { this._unsub(); } catch (_e) { /* déjà fermé */ } }
       this._unsub = null; this._sessionId = null;
       this._setStatus(message, 'err');
@@ -203,6 +226,7 @@
     }
 
     _disconnect(silent) {
+      this._setScrolling(false);
       if (this._unsub) { try { this._unsub(); } catch (_e) { /* déjà fermé */ } }
       this._unsub = null; this._sessionId = null;
       if (!silent && this.$) {

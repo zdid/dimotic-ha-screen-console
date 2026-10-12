@@ -43,7 +43,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         hass,
         webcomponent_name=PANEL_COMPONENT,
         frontend_url_path=PANEL_URL_PATH,
-        module_url=f"{STATIC_URL}/panel.js?v=0.1.3",
+        module_url=f"{STATIC_URL}/panel.js?v=0.1.4",
         sidebar_title=title,
         sidebar_icon=icon,
         require_admin=True,
