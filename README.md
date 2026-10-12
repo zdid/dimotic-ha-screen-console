@@ -8,8 +8,9 @@ mobile HA (Android et iOS : même moteur web, voir « Limites »).
   (réservé aux **administrateurs**), y compris à distance si vous utilisez déjà HA ainsi.
 - **Choix de la session** dans une liste (la session `claude` est proposée en premier).
 - **Barre de touches** pour le téléphone : Défiler (Ctrl-A puis Échap, mode copie de `screen`), ↑ ↓, Page ↑/↓, Échap, Tab, Ctrl-C.
-- **Mouvements de souris filtrés** (sinon des séquences `;M35;12;5M` s'affichent quand l'application distante suit la souris) ;
-  les clics et la molette restent transmis.
+- **Souris** : par défaut aucun mouvement, clic ni coup de molette n'est envoyé au programme distant (sinon des restes de séquences, par ex. `60;46m`,
+  s'inscrivent dans la saisie) ; la molette fait défiler l'historique local. Le bouton **« Souris : non/oui »** de la barre envoie les clics et la molette
+  (les mouvements restent toujours filtrés).
 - Connexion **SSH locale uniquement** (127.0.0.1) avec une **clé restreinte** : elle ne peut que *lister* les sessions
   et *s'attacher* à l'une d'elles.
 
